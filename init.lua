@@ -104,7 +104,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+vim.opt.mouse = ''
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -561,29 +561,6 @@ require('lazy').setup({
         end,
       })
 
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = '*.go',
-        callback = function()
-          local params = vim.lsp.util.make_range_params()
-          params.context = { only = { 'source.organizeImports' } }
-          -- buf_request_sync defaults to a 1000ms timeout. Depending on your
-          -- machine and codebase, you may want longer. Add an additional
-          -- argument after params if you find that you have to write the file
-          -- twice for changes to be saved.
-          -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-          local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params)
-          for cid, res in pairs(result or {}) do
-            for _, r in pairs(res.result or {}) do
-              if r.edit then
-                local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or 'utf-16'
-                vim.lsp.util.apply_workspace_edit(r.edit, enc)
-              end
-            end
-          end
-          vim.lsp.buf.format { async = false }
-        end,
-      })
-
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -619,6 +596,8 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
         emmet_language_server = {},
+
+        tailwindcss = {},
 
         --
 
@@ -692,7 +671,7 @@ require('lazy').setup({
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 700,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
@@ -710,6 +689,8 @@ require('lazy').setup({
         typescriptreact = { 'prettier' },
         json = { 'prettier' },
         jsonc = { 'prettier' },
+
+        yaml = { 'prettierd' },
       },
     },
   },
@@ -846,7 +827,7 @@ require('lazy').setup({
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Patern
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
