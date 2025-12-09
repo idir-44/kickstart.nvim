@@ -19,7 +19,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = ''
+vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -39,9 +39,9 @@ vim.opt.autoindent = true
 
 vim.opt.expandtab = true
 
-vim.opt.tabstop = 2
+vim.opt.tabstop = 4
 
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 4
 
 -- Save undo history
 vim.opt.undofile = true
@@ -510,14 +510,16 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
+        ts_ls = {},
         emmet_language_server = {},
+
+        -- java
+        jdtls = {},
 
         tailwindcss = {},
         cssls = {},
 
         clangd = {},
-        cmakelang = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -549,6 +551,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettier',
+        'goimports',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -6,6 +6,8 @@ return {
 
   { 'tpope/vim-commentary' },
 
+  { 'nvim-java/nvim-java' },
+
   {
     'xiyaowong/transparent.nvim',
     config = function()
